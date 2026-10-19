@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>True or False 💘</title>
 
-  <!-- Fonts -->
+  
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
-  <!-- Confetti -->
+
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -38,7 +38,7 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* ---------- Screens (each one is a card) ---------- */
+
     .card {
       display: none;
       width: min(92%, 420px);
@@ -108,7 +108,7 @@
       margin-bottom: 30px;
     }
 
-    /* ---------- Buttons ---------- */
+
     .btn {
       padding: 14px 36px;
       border-radius: 40px;
@@ -139,7 +139,7 @@
       color: #777;
     }
 
-    /* Once it starts running, the False button roams the whole screen */
+
     .btn-false.flying {
       position: fixed;
       z-index: 50;
@@ -154,7 +154,7 @@
       height: 56px;
     }
 
-    /* ---------- Question screen ---------- */
+
     .progress {
       display: flex;
       justify-content: center;
@@ -192,7 +192,7 @@
       justify-content: center;
     }
 
-    /* ---------- Finale: video + photo ---------- */
+
     #gallery {
       position: fixed;
       left: 24px;
@@ -227,7 +227,7 @@
       #gallery.show { transform: translate(-50%, 0) scale(1); }
     }
 
-    /* ---------- Floating hearts ---------- */
+
     .heart {
       position: absolute;
       bottom: -20px;
@@ -253,17 +253,17 @@
 
 <body>
 
-  <!-- Screen 1: landing -->
+
   <section class="card active" id="screenStart">
     <div class="emoji">🌻✨❤️</div>
     <h1>True or False</h1>
-    <p class="subtitle">a few questions, for you</p>
+    <p class="subtitle">For my Niki :)/p>
     <div class="buttons">
       <button class="btn btn-main" id="startBtn" type="button">Start 💖</button>
     </div>
   </section>
 
-  <!-- Screen 2: questions (one card, reused for every question) -->
+
   <section class="card" id="screenQuiz">
     <div class="progress" id="progress"></div>
     <div class="count" id="count"></div>
@@ -275,10 +275,10 @@
     </div>
   </section>
 
-  <!-- Screen 3: finale -->
+
   <section class="card" id="screenEnd">
     <div class="emoji">💕🌻💕</div>
-    <h2 style="margin-bottom:0">CORRECTTTT 💕<br>I love you my honeybun :)</h2>
+    <h2 style="margin-bottom:0">ALL 5 CORRECTTTT 💕<br>I love you my honeybun :)</h2>
   </section>
 
   <div id="gallery">
@@ -287,7 +287,7 @@
   </div>
 
   <script>
-    // ====== EDIT YOUR QUESTIONS HERE ======
+
     const QUESTIONS = [
       "You are the most beautiful girl in the world",
       "I am beyond lucky to have you",
@@ -295,7 +295,7 @@
       "You are doing so well and should be so proud",
       "I love you"
     ];
-    // ======================================
+
 
     const $ = (id) => document.getElementById(id);
     const screens = { start: $("screenStart"), quiz: $("screenQuiz"), end: $("screenEnd") };
@@ -313,7 +313,7 @@
       screens[name].classList.add("active");
     }
 
-    // ---------- Question rendering ----------
+
     function renderQuestion() {
       $("question").textContent = QUESTIONS[current];
       $("count").textContent = "Question " + (current + 1) + " of " + QUESTIONS.length;
@@ -324,7 +324,7 @@
       resetFalseButton();
     }
 
-    // ---------- Start ----------
+
     $("startBtn").addEventListener("click", () => {
       current = 0;
       quizActive = true;
@@ -332,7 +332,7 @@
       show("quiz");
     });
 
-    // ---------- True: next question ----------
+
     trueBtn.addEventListener("click", () => {
       miniConfetti();
       current++;
@@ -343,7 +343,7 @@
       }
 
       renderQuestion();
-      // replay the slide-in animation
+
       screens.quiz.classList.remove("swap");
       void screens.quiz.offsetWidth;
       screens.quiz.classList.add("swap");
@@ -372,8 +372,8 @@
       } catch (err) { console.error("Confetti failed:", err); }
     }
 
-    // ---------- False: runs away around the whole screen, can't be clicked ----------
-    let target = null;      // where the button is heading (viewport coords)
+
+    let target = null;      
     let lastDodge = 0;
 
     function resetFalseButton() {
@@ -398,8 +398,8 @@
 
       if (!falseBtn.classList.contains("flying")) {
         const r = falseBtn.getBoundingClientRect();
-        // The card uses backdrop-filter, which would trap position:fixed inside it,
-        // so move the button out to <body> before letting it roam.
+
+        
         document.body.appendChild(falseBtn);
         falseBtn.classList.add("flying");
         falseBtn.style.left = r.left + "px";
@@ -434,15 +434,15 @@
       falseBtn.style.top = best.y + "px";
     }
 
-    // Hover (desktop)
+    
     falseBtn.addEventListener("mouseenter", (e) => dodge(e.clientX, e.clientY));
-    // Touch (phones)
+   
     falseBtn.addEventListener("touchstart", (e) => { e.preventDefault(); dodge(); }, { passive: false });
     falseBtn.addEventListener("pointerdown", (e) => { e.preventDefault(); dodge(e.clientX, e.clientY); });
-    // Safety net: if a click or keypress ever reaches it, it still just runs away
+    
     falseBtn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); dodge(e.clientX, e.clientY); });
 
-    // Also dodge when the pointer gets close, so it can't be cornered and clicked
+    
     document.addEventListener("pointermove", (e) => {
       if (!quizActive) return;
       const r = falseBtn.getBoundingClientRect();
@@ -456,7 +456,7 @@
       if (falseBtn.classList.contains("flying")) dodge();
     });
 
-    // ---------- Floating hearts ----------
+    
     function createHeart() {
       const heart = document.createElement("div");
       heart.className = "heart";
